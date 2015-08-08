@@ -1,7 +1,6 @@
 var HeartBeat = (function() {
   'use strict';
-  //var methods = ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"];
-  //this.init = init;
+
   var options = {};
   var internalConsoleError = 'HeartBeat';
 
@@ -11,34 +10,47 @@ var HeartBeat = (function() {
     options.methods = opt.methods || ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"];
     options.logConsole = opt.logConsole || true;
     options.logError = opt.logError || true;
-    initConsole();
-    initErrorlog();
-  }
+    options.callback = opt.callback || function(){};
 
-  var initErrorlog = function(){
-    window.onerror = function(msg, url, line, col, error) {
-      console.log(msg);
-      console.log(error);
-      if (msg !== internalConsoleError)
-          sendMessage()
+    if (options.logConsole){
+      initConsole();
     }
+    if (options.logError){
+      initErrorlog();
+    }
+
   };
 
+  var initErrorlog = function(){
+    window.onerror = function(message, url, line, col, error) {
+      if (message !== internalConsoleError){
+        var data = {
+          message: message,
+          url: url,
+          line: line,
+          col: col
+        };
+        sendMessage(data, 'error');
+      }
+
+    };
+  };
+
+
   var sendMessage = function(data, event) {
-    var id = prepareId();
+    options.callback(data, event);
+    if (options.url) {
+      var id = prepareId();
 
-    var content = JSON.stringify({
-      id: id,
-      timestamp: (new Date()).getTime(),
-      data: data,
-      event: event,
-      useragent: window.navigator.userAgent
-    });
+      var content = JSON.stringify({
+        id: id,
+        timestamp: (new Date()).getTime(),
+        data: data,
+        event: event,
+        useragent: window.navigator.userAgent
+      });
 
-    try {
-      xdr(options.url, 'POST', content);
-    } catch (e) {
-      console.log(e);
+        xdr(options.url, 'POST', content);
     }
   };
 
@@ -48,7 +60,7 @@ var HeartBeat = (function() {
     options.methods.forEach(function(method) {
       var cLog = console[method];
       console[method] = function(message) {
-        var stack = (new Error(internalConsoleError)).stack.split(/\n/);
+        var stack = (new Error()).stack.split(/\n/);
           // Chrome includes a single "Error" line, FF doesn't.
          if (stack[0].indexOf('Error') === 0) {
            stack = stack.slice(1);
@@ -57,7 +69,7 @@ var HeartBeat = (function() {
         var matches = regexp.exec(stack[1].trim());
         var content = {
           message: message,
-          script: matches[1],
+          url: matches[1],
           line: matches[2],
           col: matches[3]
         };
@@ -66,7 +78,7 @@ var HeartBeat = (function() {
         cLog.apply(console, arguments);
       };
     });
-  }
+  };
 
 /**
  * Makes a request
@@ -130,12 +142,12 @@ var HeartBeat = (function() {
     var idString = readProperties(navigator) + readProperties(screen) + readProperties(history);
     return makeHash(idString);
   };
-  //TODO: rewrite to pass navigator object
+
   var readProperties = function(obj, depth, result, info) {
     depth = depth || 1;
     result = result || '';
     info = info || {};
-    if (depth < 5) {
+    if (depth < 3) {
       for (var property in obj) {
         if (obj[property]) {
           result += property;
