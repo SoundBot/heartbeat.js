@@ -1,10 +1,11 @@
-var HeartBeat = (function() {
+; (function(window) {
   'use strict';
 
+  var heartbeat = {};
   var options = {};
   var internalConsoleError = 'HeartBeat';
 
-  var init = function(opt) {
+  heartbeat.start = function(opt) {
     options.url = opt.url;
     options.delay = opt.delay || 0;
     options.methods = opt.methods || ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"];
@@ -13,16 +14,17 @@ var HeartBeat = (function() {
     options.callback = opt.callback || function(){};
 
     if (options.logConsole){
-      initConsole();
+      this.initConsole();
     }
     if (options.logError){
-      initErrorlog();
+      this.initErrorlog();
     }
 
   };
 
-  var initErrorlog = function(){
-    window.onerror = function(message, url, line, col, error) {
+  heartbeat.initErrorlog = function(){
+
+    window.onerror = (function(message, url, line, col, error) {
       if (message !== internalConsoleError){
         var data = {
           message: message,
@@ -30,14 +32,17 @@ var HeartBeat = (function() {
           line: line,
           col: col
         };
-        sendMessage(data, 'error');
+
+        this.sendMessage(data, 'error');
       }
 
-    };
+    }).bind(this);
+
+
   };
 
 
-  var sendMessage = function(data, event) {
+  heartbeat.sendMessage = function(data, event) {
     options.callback(data, event);
     if (options.url) {
       var id = prepareId();
@@ -54,14 +59,14 @@ var HeartBeat = (function() {
     }
   };
 
-  var initConsole = function() {
+  heartbeat.initConsole = function() {
     var regexp = /at (.*)\:([0-9]{1,})\:([0-9]{1,})/;
 
-    options.methods.forEach(function(method) {
+    options.methods.forEach((function(method) {
+
       var cLog = console[method];
-      console[method] = function(message) {
+      console[method] = (function(message) {
         var stack = (new Error()).stack.split(/\n/);
-          // Chrome includes a single "Error" line, FF doesn't.
          if (stack[0].indexOf('Error') === 0) {
            stack = stack.slice(1);
          }
@@ -74,10 +79,10 @@ var HeartBeat = (function() {
           col: matches[3]
         };
 
-        sendMessage(content, 'console.' + method);
+        this.sendMessage(content, 'console.' + method);
         cLog.apply(console, arguments);
-      };
-    });
+      }).bind(this);
+    }).bind(this));
   };
 
 /**
@@ -168,6 +173,6 @@ var HeartBeat = (function() {
 
   };
 
-  return init;
+  window.heartbeat = heartbeat;
 
-})();
+})(window);
