@@ -40,4 +40,7 @@ gulp.task('scripts', function() {
 gulp.task('watch', function() {
   gulp.watch('./src/*.js', ['scripts', 'autopolyfiller', 'recheck']);
 });
+
 gulp.task('serve', ['scripts', 'open', 'watch']);
+
+gulp.task('build', ['scripts']);
