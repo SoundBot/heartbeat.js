@@ -36,22 +36,16 @@ var HeartBeat = (function() {
       };
     });
 
-    if (Function.prototype.bind && window.console && typeof console.log == "object") {
-      methods.forEach(function(method) {
-        console[method] = this.bind(console[method], console);
-      }, Function.prototype.call);
-    }
   };
 
-  /**
-   * Make a X-Domain request to url and callback.
-   *
-   * @param url {String}
-   * @param method {String} HTTP verb ('GET', 'POST', 'DELETE', etc.)
-   * @param data {String} request body
-   * @param callback {Function} to callback on completion
-   * @param errback {Function} to callback on error
-   */
+/**
+ * Makes a request
+ * @param  {String}   url      URL
+ * @param  {String}   method   Method type (GET/POST)
+ * @param  {String}   data     Content
+ * @param  {Function} callback Function to invoke on success
+ * @param  {Function}   errback  Function to invoke on error
+ */
   var xdr = function(url, method, data, callback, errback) {
     var req;
 
@@ -81,7 +75,10 @@ var HeartBeat = (function() {
       };
       req.send(data);
     } else {
-      errback(new Error('CORS not supported'));
+      if (errback){
+        errback();
+      }
+      
     }
   };
 
