@@ -1,42 +1,72 @@
 var HeartBeat = (function() {
   'use strict';
+  //var methods = ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"];
+  //this.init = init;
+  var options = {};
+  var internalConsoleError = 'HeartBeat';
 
-  function HeartBeat(options) {
-    var methods = ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"];
-
-    this.url = options.url;
-    this.delay = options.delay || 0;
-    this.methods = options.methods || methods;
-    this.logConsole = options.logConsole || true;
-    this.logError = options.logError || true;
-    this.init();
+  var init = function(opt) {
+    options.url = opt.url;
+    options.delay = opt.delay || 0;
+    options.methods = opt.methods || ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"];
+    options.logConsole = opt.logConsole || true;
+    options.logError = opt.logError || true;
+    initConsole();
+    initErrorlog();
   }
-//TODO: catch js errors
-  HeartBeat.prototype.sendMessage = function(text, event) {
+
+  var initErrorlog = function(){
+    window.onerror = function(msg, url, line, col, error) {
+      console.log(msg);
+      console.log(error);
+      if (msg !== internalConsoleError)
+          sendMessage()
+    }
+  };
+
+  var sendMessage = function(data, event) {
     var id = prepareId();
 
-    var data = JSON.stringify({
+    var content = JSON.stringify({
       id: id,
       timestamp: (new Date()).getTime(),
-      text: text,
+      data: data,
       event: event,
       useragent: window.navigator.userAgent
     });
 
-    xdr(this.url, 'POST', data);
+    try {
+      xdr(options.url, 'POST', content);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  HeartBeat.prototype.init = function() {
-    var that = this;
-    this.methods.forEach(function(method) {
+  var initConsole = function() {
+    var regexp = /at (.*)\:([0-9]{1,})\:([0-9]{1,})/;
+
+    options.methods.forEach(function(method) {
       var cLog = console[method];
       console[method] = function(message) {
-        that.sendMessage(message, 'console.' + method);
+        var stack = (new Error(internalConsoleError)).stack.split(/\n/);
+          // Chrome includes a single "Error" line, FF doesn't.
+         if (stack[0].indexOf('Error') === 0) {
+           stack = stack.slice(1);
+         }
+
+        var matches = regexp.exec(stack[1].trim());
+        var content = {
+          message: message,
+          script: matches[1],
+          line: matches[2],
+          col: matches[3]
+        };
+
+        sendMessage(content, 'console.' + method);
         cLog.apply(console, arguments);
       };
     });
-
-  };
+  }
 
 /**
  * Makes a request
@@ -60,7 +90,8 @@ var HeartBeat = (function() {
             if (req.status >= 200 && req.status < 400) {
               callback(req.responseText);
             } else {
-              errback(new Error('Response returned with non-OK status'));
+              //errback(new Error('Response returned with non-OK status'));
+              //console.log('err');
             }
           }
         };
@@ -76,9 +107,9 @@ var HeartBeat = (function() {
       req.send(data);
     } else {
       if (errback){
-        errback();
+        //errback();
       }
-      
+
     }
   };
 
@@ -125,6 +156,6 @@ var HeartBeat = (function() {
 
   };
 
-  return HeartBeat;
+  return init;
 
 })();
