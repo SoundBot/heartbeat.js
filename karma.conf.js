@@ -1,6 +1,7 @@
 var path = require('path');
 
 module.exports = function(config) {
+
   config.set({
 
     frameworks: ['jasmine'],
@@ -30,9 +31,12 @@ module.exports = function(config) {
       options: {
         'selenium-version': '2.41.0'
       }
-    },
+    }
 
-    customLaunchers: {
+  });
+
+  if (process.env.TRAVIS) {
+    var customLaunchers = {
       'SL_Chrome': {
         base: 'SauceLabs',
         browserName: 'chrome',
@@ -73,12 +77,9 @@ module.exports = function(config) {
         platform: "OS X 10.10",
         version: "8.1"
       }
-    }
-  });
+    };
 
-  if (process.env.TRAVIS) {
     var buildLabel = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')';
-    console.log(buildLabel);
     config.browserNoActivityTimeout = 120000;
     config.sauceLabs.build = buildLabel;
     config.sauceLabs.startConnect = false;
@@ -86,9 +87,10 @@ module.exports = function(config) {
     config.sauceLabs.recordScreenshots = true;
     //don't kill browsers in the cloud
     config.captureTimeout = 0;
+    config.customLaunchers = customLaunchers;
     config.browsers = Object.keys(customLaunchers);
 
   }
 
 
-}
+};
