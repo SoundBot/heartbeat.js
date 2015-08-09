@@ -8,7 +8,7 @@ module.exports = function(config) {
 
     files: [
       'tests/**/*.js',
-      'dist/**/*.js',
+      'src/**/*.js',
     ],
 
     reporters: ['progress', 'saucelabs'],
@@ -84,7 +84,7 @@ module.exports = function(config) {
     config.sauceLabs.build = buildLabel;
     config.sauceLabs.startConnect = false;
     config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
-    config.sauceLabs.recordScreenshots = true;
+    config.sauceLabs.recordScreenshots = false;
     //don't kill browsers in the cloud
     config.captureTimeout = 0;
     config.customLaunchers = customLaunchers;
