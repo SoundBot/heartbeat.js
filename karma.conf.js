@@ -24,6 +24,14 @@ module.exports = function(config) {
 
     singleRun: true,
 
+    sauceLabs: {
+      testName: 'heartbeat.js',
+      startConnect: true,
+      options: {
+        'selenium-version': '2.41.0'
+      }
+    },
+
     customLaunchers: {
       'SL_Chrome': {
         base: 'SauceLabs',
