@@ -8,12 +8,14 @@ env:
     - secure: KFXQ0O5Zp4ulvwSuFEnZUjWxRKMpsL+q/4zydHBo/hxTCgcnGydh9QJnbfHkpHfi9wAenfowaFSdM0OrfIU2II484oZtblY2ZP+rWyqp1nWH66fgITjZKvTiGUZ8WLwwVO9tsdYb7dXZnIv+v1oGuTB8EmWwFPU0jX/xgpgTnZ5Mu2AdtgsFuALQ8hIOb+f4di6ffyN7bsCpJW4ez0i/5f/SEm3DGee+BuFAFkyYoneseW26BhgmMc7dnpOqvxk065U70r6ZrwL8zhKIGUWVAlzOqswWEjTKYKguljFY4UsHptk6kQRB6xdBy9oZjVklEQf/1/6Q3sPHbJweGs/2XT2xJa74xsdGQUNnUKx6a6ZohBlmWglOsVJ8busmFfwUnxtT01Db1MD1Q2VBR82WobtB22iL440rXWMxOqnzOHPJF3vvtWYmtHvrVvuH0d+24Py2M17gaDyzC8nAOIsnCk7igybhRlOybnxOpOeJz+6xEg9pmGG9GuX9f89De2Vb7zuF9D11vZb/SNiIGACLxxMItYs9/JZFT1vtMCvA+5NQSlKjroznTCyNMG37VynYTeThzS/SB9+zSHfupxy5rb43vEN2CCnkVgYg1JkWpzCl9JHcKQ5X4wwBdKFIb+9AhUwKxQH/9o9/EVYnqoUGV+Dpnycj1wIJJ/HRGfnIqw4=
 
 script:
-  gulp build
+  npm test && gulp build
 
 sudo: false
 
-before_install:
-  npm install gulp -g && npm install
+install:
+  npm install gulp -g
+  npm install karma-cli -g
+  npm install
 
 notifications:
     email: false
