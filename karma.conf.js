@@ -10,7 +10,7 @@ module.exports = function(config) {
       'dist/**/*.js',
     ],
 
-    reporters: ['progress'],
+    reporters: ['progress', 'saucelabs'],
 
     port: 9876,
 
@@ -78,16 +78,16 @@ module.exports = function(config) {
 
   if (process.env.TRAVIS) {
     var buildLabel = 'TRAVIS #' + process.env.TRAVIS_BUILD_NUMBER + ' (' + process.env.TRAVIS_BUILD_ID + ')';
+    console.log(buildLabel);
     config.browserNoActivityTimeout = 120000;
     config.sauceLabs.build = buildLabel;
     config.sauceLabs.startConnect = false;
     config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
     config.sauceLabs.recordScreenshots = true;
+    //don't kill browsers in the cloud
+    config.captureTimeout = 0;
+    config.browsers = Object.keys(customLaunchers);
 
-    if (process.env.BROWSER_PROVIDER === 'saucelabs' || !process.env.BROWSER_PROVIDER) {
-      //don't kill browsers in the cloud
-      config.captureTimeout = 0;
-    }
   }
 
 
