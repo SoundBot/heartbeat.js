@@ -25,9 +25,9 @@ gulp.task('open', ['connect'], function (done) {
 });
 
 gulp.task('autopolyfiller', function () {
-    return gulp.src('heartbeat.js')
+    return gulp.src('./src/heartbeat.js')
         .pipe(autopolyfiller('polyfills.js'))
-        .pipe(gulp.dest('./'));
+        .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('scripts', function() {
