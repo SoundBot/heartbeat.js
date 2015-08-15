@@ -129,21 +129,22 @@
     }
   };
 
-  var makeHash = function(string) {
+  var makeHash = function(input) {
     var hash = 0;
-    if (string.length === 0) {
+    if (input.length === 0) {
       return hash;
     }
-    for (var i = 0; i < string.length; i++) {
-      var chr = string.charCodeAt(i);
-      hash = ((hash << 5) - hash) + chr;
-      hash |= 0;
+
+    for (var i = 0; i < input.length; i++) {
+     hash = hash * 31 + input.charCodeAt(i);
+     hash &= hash;
     }
+
     return hash;
   };
 
   var prepareId = function() {
-    var idString = readProperties(navigator) + readProperties(screen) + readProperties(history);
+    var idString = readProperties(window.navigator) + readProperties(window.screen) + readProperties(window.history);
     return makeHash(idString);
   };
 
@@ -153,11 +154,11 @@
     info = info || {};
     if (depth < 3) {
       for (var property in obj) {
-        if (obj[property]) {
+        if (obj[property] !== undefined) {
           result += property;
           switch (typeof obj[property]) {
             case 'object':
-              readProperties(obj[property], ++depth, result, info);
+              result += readProperties(obj[property], ++depth, '', info);
               break;
             case 'number':
             case 'string':
