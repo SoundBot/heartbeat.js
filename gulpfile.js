@@ -5,6 +5,8 @@ var gulp = require('gulp'),
   autopolyfiller = require('gulp-autopolyfiller'),
   concat = require('gulp-concat'),
   wrap = require("gulp-wrap"),
+  order = require("gulp-order"),
+  uglify = require("gulp-uglify"),
   isDist = process.argv.indexOf('serve') === -1;
 
 
@@ -30,10 +32,14 @@ gulp.task('autopolyfiller', function () {
         .pipe(gulp.dest('./src'));
 });
 
-gulp.task('scripts', function() {
+gulp.task('scripts', ['autopolyfiller'], function() {
   return gulp.src(['./src/*.js'])
-    .pipe(wrap('; (function(window) {<%= contents %>})(window);'))
+    .pipe(order([
+      'src/heartbeat.js',
+      'src/polyfills.js',
+    ]))
     .pipe(concat('heartbeat.js'))
+    .pipe(wrap('; (function(window) {<%= contents %>})(window);'))
     .pipe(gulp.dest('./dist/'));
 });
 
@@ -44,4 +50,9 @@ gulp.task('watch', function() {
 
 gulp.task('serve', ['scripts', 'open', 'watch']);
 
-gulp.task('build', ['scripts']);
+gulp.task('build', ['scripts'], function() {
+  return gulp.src(['./dist/heartbeat.js'])
+    .pipe(uglify())
+    .pipe(concat('heartbeat.min.js'))
+    .pipe(gulp.dest('./dist/'));
+});
