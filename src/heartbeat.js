@@ -1,5 +1,4 @@
-; (function(window) {
-  'use strict';
+ 'use strict';
 
   var heartbeat = {};
   var options = {};
@@ -174,5 +173,3 @@
   };
 
   window.heartbeat = heartbeat;
-
-})(window);
