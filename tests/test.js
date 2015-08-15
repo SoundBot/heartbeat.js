@@ -4,9 +4,11 @@ describe("initErrorlog", function() {
         expect(typeof window.onerror).toBe('function');
     });
 
-    // it("window.onerror should send a message", function(){
-    //     expect(window.onerror()).toBe('function');
-    // });
+    it("window.onerror should send a message", function(){
+        spyOn(heartbeat, 'sendMessage');
+        window.onerror('test', 'http://test.loc', 5, 6, {});
+        expect(heartbeat.sendMessage).toHaveBeenCalled();
+    });
 });
 
 describe("readProperties", function() {
@@ -65,5 +67,11 @@ describe("start", function() {
         };
 
         expect(options).toEqual(opt);
+    });
+});
+
+describe("sendMessage", function() {
+    it("Should be defined", function(){
+      expect(heartbeat.sendMessage('test', 'test')).toBe(undefined);
     });
 });
