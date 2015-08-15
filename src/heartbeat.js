@@ -94,7 +94,6 @@
           var xhr = new XMLHttpRequest();
 
           if ("withCredentials" in xhr) {
-            // XHR for Chrome/Firefox/Opera/Safari.
             xhr.open(method, url, true);
           } else if (typeof XDomainRequest !== "undefined") {
             xhr = new XDomainRequest();
@@ -113,7 +112,7 @@
 
           //do it, wrapped in timeout to fix ie9
           setTimeout(function() {
-            xhr.send();
+            xhr.send(data);
           }, 0);
 
         }
