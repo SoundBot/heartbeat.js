@@ -89,44 +89,37 @@
  * @param  {String}   url      URL
  * @param  {String}   method   Method type (GET/POST)
  * @param  {String}   data     Content
- * @param  {Function} callback Function to invoke on success
- * @param  {Function}   errback  Function to invoke on error
  */
-  var xdr = function(url, method, data, callback, errback) {
-    var req;
+  var xdr = function(url, method, data) {
+    var promise = function(resolve, reject) {
+          var xhr = new XMLHttpRequest();
 
-    if (XMLHttpRequest) {
-      req = new XMLHttpRequest();
-
-      if ('withCredentials' in req) {
-        req.open(method, url, true);
-        req.onerror = errback;
-        req.onreadystatechange = function() {
-          if (req.readyState === 4) {
-            if (req.status >= 200 && req.status < 400) {
-              callback(req.responseText);
-            } else {
-              //errback(new Error('Response returned with non-OK status'));
-              //console.log('err');
-            }
+          if ("withCredentials" in xhr) {
+            // XHR for Chrome/Firefox/Opera/Safari.
+            xhr.open(method, url, true);
+          } else if (typeof XDomainRequest !== "undefined") {
+            xhr = new XDomainRequest();
+            xhr.open(method, url);
+          } else {
+            reject('CORS not supported')
           }
-        };
-        req.send(data);
-      }
-    } else if (XDomainRequest) {
-      req = new XDomainRequest();
-      req.open(method, url);
-      req.onerror = errback;
-      req.onload = function() {
-        callback(req.responseText);
-      };
-      req.send(data);
-    } else {
-      if (errback){
-        //errback();
-      }
 
-    }
+          xhr.onload = function() {
+            resolve(xhr.responseText);
+          };
+
+          xhr.onerror = function() {
+            reject('Failed to load');
+          };
+
+          //do it, wrapped in timeout to fix ie9
+          setTimeout(function() {
+            xhr.send();
+          }, 0);
+
+        }
+
+        return new Promise(promise);
   };
 
   var makeHash = function(input) {
