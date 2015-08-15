@@ -16,11 +16,11 @@ module.exports = function(config) {
     },
 
     coverageReporter: {
-     type : 'html',
+     type : 'lcov',
      dir : 'coverage/'
     },
 
-    reporters: ['progress', 'saucelabs', 'coverage'],
+    reporters: ['progress', 'saucelabs', 'coverage', 'coveralls'],
 
     port: 9876,
 

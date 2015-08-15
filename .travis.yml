@@ -18,7 +18,6 @@ script:
 
 after_script:
   - istanbul cover src/heartbeat.js
-  - istanbul-coveralls
 
 sudo: false
 
