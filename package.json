@@ -1,7 +1,7 @@
 {
   "name": "HeartBeat.js",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.2.0",
+  "description": "Console and error minitoring library",
   "main": "./dist/hearbeat.js",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js"
@@ -27,5 +27,9 @@
     "karma-safari-launcher": "^0.1.1",
     "karma-sauce-launcher": "^0.2.14",
     "opn": "^3.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/SoundBot/heartbeat.js.git"
   }
 }
