@@ -6,7 +6,6 @@
 
   heartbeat.start = function(opt) {
     options.url = opt.url;
-    options.delay = typeof opt.delay !== 'undefined' ? opt.delay : 0;
     options.methods = typeof opt.methods !== 'undefined' ? opt.methods : ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"];
     options.logConsole = typeof opt.logConsole !== 'undefined' ? opt.logConsole : true;
     options.logError = typeof opt.logError !== 'undefined' ? opt.logError : true;
