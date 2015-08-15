@@ -17,7 +17,7 @@ script:
   - npm test && gulp build
 
 after_script:
-  - istanbul cover src/*.js
+  - istanbul cover src/heartbeat.js
   - istanbul-coveralls
 
 sudo: false

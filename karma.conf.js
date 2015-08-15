@@ -12,7 +12,7 @@ module.exports = function(config) {
     ],
 
     preprocessors: {
-     'src/**/*.js': ['coverage']
+     'src/heartbeat.js': ['coverage']
     },
 
     coverageReporter: {
