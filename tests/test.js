@@ -9,6 +9,12 @@ describe("initErrorlog", function() {
         window.onerror('test', 'http://test.loc', 5, 6, {});
         expect(heartbeat.sendMessage).toHaveBeenCalled();
     });
+
+    it("Should call initErrorlog", function(){
+        spyOn(heartbeat, 'initErrorlog');
+        heartbeat.start({url: 'http://test.loc', logError: true});
+        expect(heartbeat.initErrorlog).toHaveBeenCalled();
+    });
 });
 
 describe("readProperties", function() {
@@ -73,5 +79,14 @@ describe("start", function() {
 describe("sendMessage", function() {
     it("Should be defined", function(){
       expect(heartbeat.sendMessage('test', 'test')).toBe(undefined);
+    });
+});
+
+describe("initConsole", function() {
+    it("Should modify console.log", function(){
+      var warn = console.warn;
+
+      heartbeat.start({url: 'http://localhost', methods: ['warn']});
+      expect(console.warn).not.toEqual(warn);
     });
 });
