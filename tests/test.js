@@ -43,3 +43,27 @@ describe("xdr", function() {
         expect(promise.then).toBeDefined();
     });
 });
+
+describe("start", function() {
+      it("Should set options", function(){
+        var nop = function(){};
+
+        heartbeat.start({
+          url: 'http://localhost',
+          logConsole: true,
+          logError: false,
+          callback: nop
+        });
+
+        var opt = {
+          url: 'http://localhost',
+          delay: 0,
+          methods: ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"],
+          logConsole: true,
+          logError: false,
+          callback: nop
+        };
+
+        expect(options).toEqual(opt);
+    });
+});
