@@ -1,10 +1,10 @@
-'use strict';
 
 var gulp = require('gulp'),
   connect = require('gulp-connect'),
   opn = require('opn'),
   autopolyfiller = require('gulp-autopolyfiller'),
   concat = require('gulp-concat'),
+  wrap = require("gulp-wrap"),
   isDist = process.argv.indexOf('serve') === -1;
 
 
@@ -32,6 +32,7 @@ gulp.task('autopolyfiller', function () {
 
 gulp.task('scripts', function() {
   return gulp.src(['./src/*.js'])
+    .pipe(wrap('; (function(window) {<%= contents %>})(window);'))
     .pipe(concat('heartbeat.js'))
     .pipe(gulp.dest('./dist/'));
 });
