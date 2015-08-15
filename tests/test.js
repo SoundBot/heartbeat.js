@@ -38,7 +38,8 @@ describe("prepareId", function() {
 });
 
 describe("xdr", function() {
-    it("Should return a number", function(){
-        expect(prepareId()).toEqual(jasmine.any(Number));
+      it("Should return promise", function(){
+        var promise = xdr('http://localhost', 'POST', 'test');
+        expect(promise.then).toBeDefined();
     });
 });
