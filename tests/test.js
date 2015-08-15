@@ -49,7 +49,9 @@ describe("xdr", function() {
       it("Should return promise", function(){
         var promise = xdr('http://localhost', 'POST', 'test');
         expect(promise.then).toBeDefined();
-    });
+      });
+
+
 });
 
 describe("start", function() {
@@ -65,7 +67,6 @@ describe("start", function() {
 
         var opt = {
           url: 'http://localhost',
-          delay: 0,
           methods: ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"],
           logConsole: true,
           logError: false,
