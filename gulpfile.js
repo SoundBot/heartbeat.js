@@ -27,7 +27,7 @@ gulp.task('open', ['connect'], function (done) {
 gulp.task('autopolyfiller', function () {
     return gulp.src('./src/heartbeat.js')
         .pipe(autopolyfiller('polyfills.js'))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./src'));
 });
 
 gulp.task('scripts', function() {
