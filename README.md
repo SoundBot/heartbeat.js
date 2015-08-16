@@ -9,7 +9,7 @@ HeartBeat.js is a small (8Kb minified), zero-dependency library for sending cons
 
 ### Installation
 #### bower
-`bower install hearbeat`
+`bower install heartbeat`
 #### npm
 `npm install heartbeat.js`
 ### Usage
