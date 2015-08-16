@@ -3,8 +3,10 @@
 
 ![](http://soundbot.github.io/heartbeat.js/logo.png)
 
+Track your bugs easy!
 
 HeartBeat.js is a small (8Kb minified), zero-dependency library for sending console events to user-defined URL. It supports all major console events (log, warn, etc.) and errors.
+
 
 ### Usage
 
@@ -16,7 +18,38 @@ var options = {
 };
 hearbeat.start(options);
 ```
+### Request format
+`id` - user identifier
 
+`timestamp` - event timestamp
+
+`data.message` - text or error message
+
+`data.url` - URL of page
+
+`data.line` - line of error or message
+
+`data.col` - column of error or message
+
+`event` - name of an event
+
+`useragent` - browser user agent
+#### Example
+```javascript
+{
+  "id":1375674124,
+  "timestamp":1439691618654,
+  "data":{
+    "message":"test",
+    "url":"http://example.com",
+    "line":"6",
+    "col":"13"
+},
+  "event":"console.log",
+  "useragent":"Mozilla/5.0 Chrome/40.0.2403.155 Safari/537.36"
+}
+
+```
 ### Options
 
 #### options.url
