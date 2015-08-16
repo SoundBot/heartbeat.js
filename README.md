@@ -18,20 +18,20 @@ var options = {
 };
 hearbeat.start(options);
 ```
-### Request format
+### Data format
 `id` - user identifier
 
 `timestamp` - event timestamp
 
-`data.message` - text or error message
+`data.message` - message (or error) text
 
-`data.url` - URL of page
+`data.url` - page URL
 
-`data.line` - line of error or message
+`data.line` - message (or error) line number
 
-`data.col` - column of error or message
+`data.col` - message (or error) column number
 
-`event` - name of an event
+`event` - event name
 
 `useragent` - browser user agent
 #### Example
@@ -73,3 +73,6 @@ Enable error monitoring
 Type:`Function` Default: ` `
 
 Callback function
+
+### License
+MIT, see LICENSE file
