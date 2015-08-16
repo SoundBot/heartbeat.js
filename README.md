@@ -1,7 +1,8 @@
-# HeartBeat.js
+![](http://soundbot.github.io/heartbeat.js/logo.png)
+
 ##### Console monitoring library
 
-HeartBeat is a small (8Kb minified), zero-dependency library for sending console events to user-defined URL. Supports all major console events (log, warn, etc.) and errors.
+HeartBeat.js is a small (8Kb minified), zero-dependency library for sending console events to user-defined URL. Supports all major console events (log, warn, etc.) and errors.
 
 ### Usage
 
