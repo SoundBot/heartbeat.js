@@ -20,7 +20,7 @@ Minimal example:
 var options = {
    url: 'http://example.com/logger'
 };
-hearbeat.start(options);
+heartbeat.start(options);
 ```
 ### Data format
 `id` - user identifier
