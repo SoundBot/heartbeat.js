@@ -10,7 +10,7 @@
  */
   heartbeat.start = function(opt) {
     options.url = opt.url;
-    options.methods = typeof opt.methods !== 'undefined' ? opt.methods : ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"];
+    options.methods = typeof opt.methods !== 'undefined' ? opt.methods : ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'];
     options.logConsole = typeof opt.logConsole !== 'undefined' ? opt.logConsole : true;
     options.logError = typeof opt.logError !== 'undefined' ? opt.logError : true;
     options.callback = typeof opt.callback !== 'undefined' ? opt.callback : function(){};
@@ -107,13 +107,13 @@
     var promise = function(resolve, reject) {
           var xhr = new XMLHttpRequest();
 
-          if ("withCredentials" in xhr) {
+          if ('withCredentials' in xhr) {
             xhr.open(method, url, true);
-          } else if (typeof XDomainRequest !== "undefined") {
+          } else if (typeof XDomainRequest !== 'undefined') {
             xhr = new XDomainRequest();
             xhr.open(method, url);
           } else {
-            reject('CORS not supported')
+            reject('CORS is not supported')
           }
 
           xhr.onload = function() {
