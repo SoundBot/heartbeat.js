@@ -1,6 +1,5 @@
 {
   "name": "heartbeat.js",
-  "version": "0.2.0",
   "description": "Console and error minitoring library",
   "main": "dist/hearbeat.js",
   "authors": [
