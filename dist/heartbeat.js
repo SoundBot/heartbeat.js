@@ -4,6 +4,10 @@
   var options = {};
   var internalConsoleError = 'HeartBeat';
 
+/**
+ * Initiate monitoring
+ * @param  {Object} opt Options
+ */
   heartbeat.start = function(opt) {
     options.url = opt.url;
     options.methods = typeof opt.methods !== 'undefined' ? opt.methods : ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"];
@@ -20,6 +24,9 @@
 
   };
 
+/**
+ * Watches for console errors
+ */
   heartbeat.initErrorlog = function(){
 
     window.onerror = (function(message, url, line, col, error) {
@@ -39,7 +46,11 @@
 
   };
 
-
+/**
+ * Forms the request with data
+ * @param  {Object} data  Event information
+ * @param  {String} event Event name
+ */
   heartbeat.sendMessage = function(data, event) {
     options.callback(data, event);
     if (options.url) {
@@ -57,6 +68,9 @@
     }
   };
 
+/**
+ * Watches for console events
+ */
   heartbeat.initConsole = function() {
     var regexp = /at (.*)\:([0-9]{1,})\:([0-9]{1,})/;
 
@@ -107,7 +121,7 @@
           };
 
           xhr.onerror = function() {
-            reject('Failed to load');
+            reject('XMLHttpRequest error');
           };
 
           //do it, wrapped in timeout to fix ie9
@@ -120,6 +134,11 @@
         return new Promise(promise);
   };
 
+/**
+ * Creates a hash. Based on Java.lang.String hash
+ * @param  {String} input Input string
+ * @return {Integer}      Hash
+ */
   var makeHash = function(input) {
     var hash = 0;
     if (input.length === 0) {
@@ -134,11 +153,22 @@
     return hash;
   };
 
+/**
+ * Gathers information about user
+ * @return {Integer} Hash
+ */
   var prepareId = function() {
     var idString = readProperties(window.navigator) + readProperties(window.screen) + readProperties(window.history);
     return makeHash(idString);
   };
 
+/**
+ * This function extracts "valuable" information from an object
+ * @param  {Object} obj    Input object
+ * @param  {Integer} depth  Depth of iteration
+ * @param  {String} result Prefix string
+ * @return {String}        All properties and values
+ */
   var readProperties = function(obj, depth, result, info) {
     depth = depth || 1;
     result = result || '';

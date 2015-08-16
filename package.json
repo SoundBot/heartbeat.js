@@ -1,6 +1,6 @@
 {
-  "name": "HeartBeat.js",
-  "version": "0.2.0",
+  "name": "heartbeat.js",
+  "version": "0.2.1",
   "description": "Console and error minitoring library",
   "main": "dist/hearbeat.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "karma-sauce-launcher": "^0.2.14",
     "opn": "^3.0.2"
   },
+  "keywords": ["console", "monitoring", "tools"],
   "repository": {
     "type": "git",
     "url": "git://github.com/SoundBot/heartbeat.js.git"
