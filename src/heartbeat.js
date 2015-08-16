@@ -164,4 +164,8 @@
 
   };
 
-  window.heartbeat = heartbeat;
+  if (typeof define === 'function' && define['amd']) {
+    define(['exports'], heartbeat);
+  } else {
+    window.heartbeat = heartbeat;
+  }
