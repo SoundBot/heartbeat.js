@@ -7,7 +7,11 @@ Track your bugs easy!
 
 HeartBeat.js is a small (8Kb minified), zero-dependency library for sending console events to user-defined URL. It supports all major console events (log, warn, etc.) and errors.
 
-
+### Installation
+#### bower
+`bower install hearbeat`
+#### npm
+`npm install heartbeat.js`
 ### Usage
 
 Minimal example:
