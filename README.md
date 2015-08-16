@@ -1,8 +1,10 @@
+[![Build Status](https://travis-ci.org/SoundBot/heartbeat.js.svg?branch=master)](https://travis-ci.org/SoundBot/heartbeat.js)
+[![Coverage Status](https://coveralls.io/repos/SoundBot/heartbeat.js/badge.svg?branch=master&service=github)](https://coveralls.io/github/SoundBot/heartbeat.js?branch=master)
+
 ![](http://soundbot.github.io/heartbeat.js/logo.png)
 
-##### Console monitoring library
 
-HeartBeat.js is a small (8Kb minified), zero-dependency library for sending console events to user-defined URL. Supports all major console events (log, warn, etc.) and errors.
+HeartBeat.js is a small (8Kb minified), zero-dependency library for sending console events to user-defined URL. It supports all major console events (log, warn, etc.) and errors.
 
 ### Usage
 
