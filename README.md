@@ -18,7 +18,7 @@ Minimal example:
 
 ```javascript
 var options = {
-   url: 'http://example.com/logger'
+  url: 'http://example.com/logger'
 };
 heartbeat.start(options);
 ```
@@ -48,7 +48,7 @@ heartbeat.start(options);
     "url":"http://example.com",
     "line":"6",
     "col":"13"
-},
+  },
   "event":"console.log",
   "useragent":"Mozilla/5.0 Chrome/40.0.2403.155 Safari/537.36"
 }
@@ -74,7 +74,7 @@ Type:`Boolean` Default: `true`
 
 Enable error monitoring
 #### options.callback
-Type:`Function` Default: ` `
+Type:`Function` Default: `function(){}`
 
 Callback function
 
