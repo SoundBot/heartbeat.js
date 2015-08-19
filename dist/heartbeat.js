@@ -196,6 +196,8 @@
 
   if (typeof define === 'function' && define['amd']) {
     define(['exports'], heartbeat);
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = heartbeat;
   } else {
     window.heartbeat = heartbeat;
   }
