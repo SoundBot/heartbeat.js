@@ -72,24 +72,40 @@
  * Watches for console events
  */
   heartbeat.initConsole = function() {
-    var regexp = /at (.*)\:([0-9]{1,})\:([0-9]{1,})/;
+    var regexp = /\/\/(.*)\:([0-9]{1,})\:([0-9]{1,})/;
 
     options.methods.forEach((function(method) {
 
       var cLog = console[method];
       console[method] = (function(message) {
-        var stack = (new Error()).stack.split(/\n/);
-         if (stack[0].indexOf('Error') === 0) {
-           stack = stack.slice(1);
-         }
+        var stackArray = (new Error()).stack.split(/\n/);
+        var content;
 
-        var matches = regexp.exec(stack[1].trim());
-        var content = {
-          message: message,
-          url: matches[1],
-          line: matches[2],
-          col: matches[3]
-        };
+        for (var el = stackArray.length - 1; el >= 0; el--) {
+          var matches = regexp.exec(stackArray[el]);
+
+          for (var mch in matches) {
+            if (matches[mch].length > 2) {
+              content = {
+                message: message,
+                url: matches[1],
+                line: matches[2],
+                col: matches[3]
+              };
+              break;
+            }
+          }
+
+          if (content) {
+            break;
+          }
+        }
+
+        // This means we cannot parse stack trace
+        // At least we pass a message.
+        if (!content) {
+          content = {message: message};
+        }
 
         this.sendMessage(content, 'console.' + method);
         cLog.apply(console, arguments);
