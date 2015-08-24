@@ -140,7 +140,11 @@
             reject('XMLHttpRequest error');
           };
 
-          xhr.setRequestHeader("Content-type", "application/json");
+          // IE <= 9 doesn't allow to set Content-type
+          if (xhr.setRequestHeader) {
+            xhr.setRequestHeader("Content-type", "application/json");
+          }
+
 
           //do it, wrapped in timeout to fix ie9
           setTimeout(function() {
