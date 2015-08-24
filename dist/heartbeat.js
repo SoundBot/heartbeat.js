@@ -72,24 +72,40 @@
  * Watches for console events
  */
   heartbeat.initConsole = function() {
-    var regexp = /at (.*)\:([0-9]{1,})\:([0-9]{1,})/;
+    var regexp = /\/\/(.*)\:([0-9]{1,})\:([0-9]{1,})/;
 
     options.methods.forEach((function(method) {
 
       var cLog = console[method];
       console[method] = (function(message) {
-        var stack = (new Error()).stack.split(/\n/);
-         if (stack[0].indexOf('Error') === 0) {
-           stack = stack.slice(1);
-         }
+        var stackArray = (new Error()).stack.split(/\n/);
+        var content;
 
-        var matches = regexp.exec(stack[1].trim());
-        var content = {
-          message: message,
-          url: matches[1],
-          line: matches[2],
-          col: matches[3]
-        };
+        for (var el = stackArray.length - 1; el >= 0; el--) {
+          var matches = regexp.exec(stackArray[el]);
+
+          for (var mch in matches) {
+            if (matches[mch].length > 2) {
+              content = {
+                message: message,
+                url: matches[1],
+                line: matches[2],
+                col: matches[3]
+              };
+              break;
+            }
+          }
+
+          if (content) {
+            break;
+          }
+        }
+
+        // This means we cannot parse stack trace
+        // At least we pass a message.
+        if (!content) {
+          content = {message: message};
+        }
 
         this.sendMessage(content, 'console.' + method);
         cLog.apply(console, arguments);
@@ -123,6 +139,12 @@
           xhr.onerror = function() {
             reject('XMLHttpRequest error');
           };
+
+          // IE <= 9 doesn't allow to set Content-type
+          if (xhr.setRequestHeader) {
+            xhr.setRequestHeader("Content-type", "application/json");
+          }
+
 
           //do it, wrapped in timeout to fix ie9
           setTimeout(function() {
@@ -304,26 +326,6 @@ Array.prototype.forEach = function forEach(callback, scope) {
 	for (var array = this, index = 0, length = array.length; index < length; ++index) {
 		callback.call(scope || window, array[index], index, array);
 	}
-};
-
-}
-if (!Array.prototype.indexOf) {
-// Array.prototype.indexOf
-Array.prototype.indexOf = function indexOf(searchElement) {
-	for (var array = this, index = 0, length = array.length; index < length; ++index) {
-		if (array[index] === searchElement) {
-			return index;
-		}
-	}
-
-	return -1;
-};
-
-}
-if (!String.prototype.trim) {
-// String.prototype.trim
-String.prototype.trim = function trim() {
-	return this.replace(/^\s+|\s+$/g, '');
 };
 
 }
