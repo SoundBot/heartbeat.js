@@ -124,6 +124,8 @@
             reject('XMLHttpRequest error');
           };
 
+          xhr.setRequestHeader("Content-type", "application/json");
+
           //do it, wrapped in timeout to fix ie9
           setTimeout(function() {
             xhr.send(data);
