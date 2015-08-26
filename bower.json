@@ -1,7 +1,7 @@
 {
   "name": "heartbeat.js",
   "version": "0.2.3",
-  "description": "Console and error minitoring library",
+  "description": "Console and error monitoring library",
   "main": "dist/hearbeat.js",
   "authors": [
     "Oleksii Segeda <soundbot@outlook.com>"
