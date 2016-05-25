@@ -62,7 +62,8 @@ describe("start", function() {
           url: 'http://localhost',
           logConsole: true,
           logError: false,
-          callback: nop
+          callback: nop,
+          data: nop
         });
 
         var opt = {
@@ -70,15 +71,21 @@ describe("start", function() {
           methods: ["log", "info", "warn", "error", "assert", "dir", "clear", "profile", "profileEnd"],
           logConsole: true,
           logError: false,
-          callback: nop
+          callback: nop,
+          data: nop
         };
 
         expect(options).toEqual(opt);
     });
 });
 
-describe("sendMessage", function() {
+describe("sendMessage", function() {   
     it("Should be defined", function(){
+      heartbeat.start({
+        url: 'http://localhost',
+        logConsole: false,
+        logError: false,
+      });
       expect(heartbeat.sendMessage('test', 'test')).toBe(undefined);
     });
 });

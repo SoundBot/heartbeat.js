@@ -3,6 +3,7 @@
   var heartbeat = {};
   var options = {};
   var internalConsoleError = 'HeartBeat';
+  var dataFn = function(data, event) { return {data: data, event: event } };
 
 /**
  * Initiate monitoring
@@ -14,6 +15,7 @@
     options.logConsole = typeof opt.logConsole !== 'undefined' ? opt.logConsole : true;
     options.logError = typeof opt.logError !== 'undefined' ? opt.logError : true;
     options.callback = typeof opt.callback !== 'undefined' ? opt.callback : function(){};
+    options.data = typeof opt.data !== 'undefined' ? opt.data : dataFn;
 
     if (options.logConsole){
       this.initConsole();
@@ -53,6 +55,10 @@
  */
   heartbeat.sendMessage = function(data, event) {
     options.callback(data, event);
+    var newData = options.data(data, event);
+    data = newData.data;
+    event = newData.event;
+    
     if (options.url) {
       var id = prepareId();
 
@@ -78,7 +84,8 @@
 
       var cLog = console[method];
       console[method] = (function(message) {
-        var stackArray = (new Error()).stack.split(/\n/);
+        var stackArray = (new Error()).stack;
+        stackArray = stackArray ? stackArray.split(/\n/) : [];
         var content;
 
         for (var el = stackArray.length - 1; el >= 0; el--) {

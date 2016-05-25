@@ -1,6 +1,6 @@
 {
   "name": "heartbeat.js",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Console and error monitoring library",
   "main": "dist/hearbeat.js",
   "authors": [

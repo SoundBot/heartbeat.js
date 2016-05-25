@@ -78,5 +78,10 @@ Type:`Function` Default: `function(){}`
 
 Callback function
 
+### Who is using it?
+
+### The World Bank
+Please submit a pull request, if your company is using it
+
 ### License
 MIT, see LICENSE file

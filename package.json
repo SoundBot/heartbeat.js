@@ -1,10 +1,10 @@
 {
   "name": "heartbeat.js",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Console and error minitoring library",
   "main": "dist/hearbeat.js",
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start karma.conf.js"
+    "test": "node ./node_modules/karma/bin/karma start karma.conf.js"
   },
   "author": "Oleksii Segeda",
   "license": "MIT",
